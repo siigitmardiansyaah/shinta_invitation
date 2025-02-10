@@ -12,11 +12,32 @@ const heartShape = () => {
  * @returns {void}
  */
 export const basicAnimation = () => {
+    // Efek konfeti muncul dari bawah ke atas dulu, meledak di tengah
     window.confetti({
-        origin: { y: 1 },
+        particleCount: 100,
+        spread: 80,
+        startVelocity: 40,  
+        origin: { y: 1, x: 0.5 }, // Muncul dari bawah, meledak di tengah
         zIndex: 1057
     });
+
+    // Setelah 1 detik, muncul dari atas ke bawah juga dari tengah
+    setTimeout(() => {
+        window.confetti({
+            particleCount: 100,
+            spread: 80,
+            startVelocity: 40,  
+            gravity: 0.4,  
+            ticks: 200,  
+            origin: { y: 0, x: 0.5 }, // Muncul dari atas, turun ke bawah, tetap di tengah
+            zIndex: 1057
+        });
+    }, 1000); // Tunggu 1 detik sebelum konfeti turun dari atas
 };
+
+
+
+
 
 /**
  * @param {number} [until=15]
