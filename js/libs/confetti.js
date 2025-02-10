@@ -22,7 +22,7 @@ export const basicAnimation = () => {
  * @param {number} [until=15]
  * @returns {void}
  */
-export const openAnimation = () => {
+export const openAnimation = (userStatus = true) => {
     const heart = heartShape();
     const colors = ['#FFC0CB', '#FF1493', '#C71585'];
 
@@ -30,28 +30,33 @@ export const openAnimation = () => {
         return Math.random() * (max - min) + min;
     };
 
-    (function frame() {
-        colors.forEach((color) => {
-            window.confetti({
-                particleCount: 1,
-                startVelocity: 0,
-                ticks: 100,  // Menambah waktu agar partikel turun lebih lama
-                origin: {
-                    x: Math.random(),
-                    y: Math.abs(Math.random()),
-                },
-                zIndex: 1057,
-                colors: [color],
-                shapes: [heart],
-                drift: randomInRange(-0.3, 0.3),  // Mengurangi drift agar turun lebih stabil
-                gravity: randomInRange(0.2, 0.4),  // Gravitasi lebih kecil untuk gerakan lebih halus
-                scalar: randomInRange(0.5, 1),
+    if (userStatus) {  // Pastikan animasi hanya berjalan jika status pengguna aktif
+        (function frame() {
+            colors.forEach((color) => {
+                window.confetti({
+                    particleCount: 1,
+                    startVelocity: 0,
+                    ticks: 100,  // Menambah waktu agar partikel turun lebih lama
+                    origin: {
+                        x: Math.random(),
+                        y: Math.abs(Math.random()),
+                    },
+                    zIndex: 1057,
+                    colors: [color],
+                    shapes: [heart],
+                    drift: randomInRange(-0.3, 0.3),  // Mengurangi drift agar turun lebih stabil
+                    gravity: randomInRange(0.2, 0.4),  // Gravitasi lebih kecil untuk gerakan lebih halus
+                    scalar: randomInRange(0.5, 1),
+                });
             });
-        });
 
-        requestAnimationFrame(frame);  // Memanggil frame secara terus-menerus
-    })();
+            requestAnimationFrame(frame);  // Memanggil frame secara terus-menerus
+        })();
+    } else {
+        // console.log('Pengguna tidak aktif. Animasi dihentikan.');
+    }
 };
+
 
 
 
