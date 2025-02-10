@@ -12,41 +12,17 @@ const heartShape = () => {
  * @returns {void}
  */
 export const basicAnimation = () => {
-    // Efek konfeti muncul dari bawah ke atas dulu, meledak di tengah
     window.confetti({
-        particleCount: 100,
-        spread: 80,
-        startVelocity: 40,  
-        origin: { y: 1, x: 0.5 }, // Muncul dari bawah, meledak di tengah
+        origin: { y: 1 },
         zIndex: 1057
     });
-
-    // Setelah 1 detik, muncul dari atas ke bawah juga dari tengah
-    setTimeout(() => {
-        window.confetti({
-            particleCount: 100,
-            spread: 80,
-            startVelocity: 40,  
-            gravity: 0.4,  
-            ticks: 200,  
-            origin: { y: 0, x: 0.5 }, // Muncul dari atas, turun ke bawah, tetap di tengah
-            zIndex: 1057
-        });
-    }, 1000); // Tunggu 1 detik sebelum konfeti turun dari atas
 };
-
-
-
-
 
 /**
  * @param {number} [until=15]
  * @returns {void}
  */
-export const openAnimation = (until = 15) => {
-    const duration = until * 1000;
-    const animationEnd = Date.now() + duration;
-
+export const openAnimation = () => {
     const heart = heartShape();
     const colors = ['#FFC0CB', '#FF1493', '#C71585'];
 
@@ -55,31 +31,29 @@ export const openAnimation = (until = 15) => {
     };
 
     (function frame() {
-        const timeLeft = animationEnd - Date.now();
-
         colors.forEach((color) => {
             window.confetti({
                 particleCount: 1,
                 startVelocity: 0,
-                ticks: Math.max(50, 75 * (timeLeft / duration)),
+                ticks: 100,  // Menambah waktu agar partikel turun lebih lama
                 origin: {
                     x: Math.random(),
-                    y: Math.abs(Math.random() - (timeLeft / duration)),
+                    y: Math.abs(Math.random()),
                 },
                 zIndex: 1057,
                 colors: [color],
                 shapes: [heart],
-                drift: randomInRange(-0.5, 0.5),
-                gravity: randomInRange(0.5, 1),
+                drift: randomInRange(-0.3, 0.3),  // Mengurangi drift agar turun lebih stabil
+                gravity: randomInRange(0.2, 0.4),  // Gravitasi lebih kecil untuk gerakan lebih halus
                 scalar: randomInRange(0.5, 1),
             });
         });
 
-        if (timeLeft > 0) {
-            requestAnimationFrame(frame);
-        }
+        requestAnimationFrame(frame);  // Memanggil frame secara terus-menerus
     })();
 };
+
+
 
 /**
 * @param {HTMLElement} div
